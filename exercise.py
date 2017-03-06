@@ -84,7 +84,25 @@ def input(events):
         if (event.type == QUIT or
             (event.type == KEYDOWN and event.key == K_ESCAPE)):
             pygame.quit()
-                
+
+# display one image on screen
+def show_image(image_path):
+
+	# clear the screen
+	screen.fill( (0,0,0) )
+
+	# load the image
+	img = pygame.image.load(image_path)
+	img = img.convert() 
+
+	# set pixel dimensions based on image
+	set_demensions(img.get_width(), img.get_height())
+
+	# rescale the image to fit the current display
+	img = pygame.transform.scale(img, (transform_x,transfrom_y))
+	screen.blit(img,(offset_x,offset_y))
+	pygame.display.flip()	
+	
 # display a blank screen
 def clear_screen():
 	screen.fill( (0,0,0) )
