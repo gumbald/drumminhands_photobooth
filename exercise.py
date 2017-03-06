@@ -85,6 +85,38 @@ def input(events):
             (event.type == KEYDOWN and event.key == K_ESCAPE)):
             pygame.quit()
 
+	
+# set variables to properly display the image on screen at right ratio
+def set_dimensions(img_w, img_h):
+	# Note this only works when in booting in desktop mode. 
+	# When running in terminal, the size is not correct (it displays small). Why?
+
+    # connect to global vars
+    global transform_y, transform_x, offset_y, offset_x
+
+    # based on output screen resolution, calculate how to display
+    ratio_h = (config.monitor_w * img_h) / img_w 
+
+    if (ratio_h < config.monitor_h):
+        #Use horizontal black bars
+        #print "horizontal black bars"
+        transform_y = ratio_h
+        transform_x = config.monitor_w
+        offset_y = (config.monitor_h - ratio_h) / 2
+        offset_x = 0
+    elif (ratio_h > config.monitor_h):
+        #Use vertical black bars
+        #print "vertical black bars"
+        transform_x = (config.monitor_h * img_w) / img_h
+        transform_y = config.monitor_h
+        offset_x = (config.monitor_w - transform_x) / 2
+        offset_y = 0
+    else:
+        #No need for black bars as photo ratio equals screen ratio
+        #print "no black bars"
+        transform_x = config.monitor_w
+        transform_y = config.monitor_h
+        offset_y = offset_x = 0
 # display one image on screen
 def show_image(image_path):
 
@@ -96,7 +128,7 @@ def show_image(image_path):
 	img = img.convert() 
 
 	# set pixel dimensions based on image
-	set_demensions(img.get_width(), img.get_height())
+	set_dimensions(img.get_width(), img.get_height())
 
 	# rescale the image to fit the current display
 	img = pygame.transform.scale(img, (transform_x,transfrom_y))
@@ -154,7 +186,7 @@ def start_photobooth():
 		
 	print "Done"
 	
-  show_image(real_path + "/finished.png")
+  	show_image(real_path + "/finished.png")
 	
 	time.sleep(restart_delay)
 	show_image(real_path + "/intro.png");
