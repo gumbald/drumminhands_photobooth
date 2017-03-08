@@ -14,7 +14,7 @@ import sys
 import socket
 import pygame
 from pygame.locals import QUIT, KEYDOWN, K_ESCAPE
-import pytumblr # https://github.com/tumblr/pytumblr
+#import pytumblr # https://github.com/tumblr/pytumblr
 import config # this is the config python file config.py
 from signal import alarm, signal, SIGALRM, SIGKILL
 import definitions as r
