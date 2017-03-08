@@ -15,6 +15,9 @@ PIN_LED_PHOTO_GRE = int(24)
 PIN_SWITCH_IN = int(18)
 
 # Folders on the Pi where the files are saved down
+FOLDER_PHOTOS_ORIGINAL = "/home/pi/Wedding/"
+FOLDER_PHOTOS_CONVERTED = "/home/pi/Wedding/Converted/"
+FOLDER_PHOTOS_MONTAGE = "/home/pi/Wedding/Montages/"
 
 # Configuration of each image
 # UK passport is 35mm width x 45mm height
