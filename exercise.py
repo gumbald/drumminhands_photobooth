@@ -17,6 +17,7 @@ from pygame.locals import QUIT, KEYDOWN, K_ESCAPE
 import pytumblr # https://github.com/tumblr/pytumblr
 import config # this is the config python file config.py
 from signal import alarm, signal, SIGALRM, SIGKILL
+import definitions as r
 
 ########################
 ### Variables Config ###
@@ -70,6 +71,38 @@ pygame.display.toggle_fullscreen()
 #################
 ### Functions ###
 #################
+
+def actuate_camera_shutter():
+    '''
+    Actuates the camera and downloads the image onto the Raspberry Pi
+    :return: the filepath of the photo taken
+    '''
+
+    image_name = "photobooth_" + strftime("%Y-%m-%d_%H%M%S", gmtime()) + ".jpg"
+    image_filepath = r.FOLDER_PHOTOS_ORIGINAL + image_name
+    gpout = ""
+
+    try:
+        gpout = subprocess.check_output("gphoto2 --capture-image-and-download --filename " + image_filepath, stderr=subprocess.STDOUT, shell=True)
+
+        # CalledProcessError is raised when the camera is turned off (or battery dies?)
+
+        if "ERROR" in gpout:
+            print gpout
+            logging.error(gpout)
+            raise IOError("Not able to take photo as the command failed for photo " + image_filepath)
+
+    except subprocess.CalledProcessError as e:
+        logging.error("Unable to take photo, likely due to camera not responding - check batteries")
+        logging.error(e)
+        raise
+
+    except Exception as e:
+        logging.error("Unable to take photo as the command failed for photo " + image_filepath)
+        logging.error(e)
+        raise
+    else:
+        return image_filepath
 
 # clean up running programs as needed when main program exits
 def cleanup():
@@ -198,6 +231,8 @@ def start_photobooth():
 print "Photo booth app running..." 
 
 show_image(real_path + "/intro.png");
+
+actuate_camera_shutter();
 
 while True:
 	#GPIO.output(led_pin,True); #turn on the light showing users they can push the button
