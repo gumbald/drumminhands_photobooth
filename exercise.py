@@ -13,6 +13,7 @@ import atexit
 import sys
 import socket
 import pygame
+import subprocess
 from pygame.locals import QUIT, KEYDOWN, K_ESCAPE
 #import pytumblr # https://github.com/tumblr/pytumblr
 import config # this is the config python file config.py
