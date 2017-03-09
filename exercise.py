@@ -223,7 +223,7 @@ def start_photobooth():
 	
 	show_image(real_path + "/uploading.png")
 	
-	status = api.PostUpdate(now,media=filename)
+	status = api.PostUpdate('#nottheonlyjbinthevillage',media=filename)
 	
 	time.sleep(restart_delay)
     
