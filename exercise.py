@@ -221,7 +221,7 @@ def start_photobooth():
 		
 	print "Done"
 	
-  show_image(real_path + "/finished.png")
+    show_image(real_path + "/finished.png")
 	
 	time.sleep(restart_delay)
 	show_image(real_path + "/intro.png");
