@@ -241,4 +241,4 @@ while True:
 	if button != 'None':
 	#GPIO.wait_for_edge(btn_pin, GPIO.FALLING)
 	#time.sleep(config.debounce) #debounce
-    start_photobooth()
+		start_photobooth()
