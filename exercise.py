@@ -87,7 +87,7 @@ def actuate_camera_shutter():
     gpout = ""
 
     try:
-        gpout = subprocess.check_output("gphoto2 --capture-image-and-download --filename " + image_filepath, stderr=subprocess.STDOUT, shell=True)
+        gpout = subprocess.check_output("gphoto2 --capture-image-and-download --keep --filename " + image_filepath, stderr=subprocess.STDOUT, shell=True)
 
         # CalledProcessError is raised when the camera is turned off (or battery dies?)
 
