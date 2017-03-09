@@ -21,6 +21,7 @@ import config # this is the config python file config.py
 from signal import alarm, signal, SIGALRM, SIGKILL
 from time import gmtime, strftime, sleep
 import definitions as r
+import twitter
 
 ########################
 ### Variables Config ###
@@ -207,16 +208,17 @@ def start_photobooth():
 	print now
   
 	filename = actuate_camera_shutter();
-	
-	show_image(filename)
-	sleep(prep_delay)
   
 	########################### Begin Step 3 #################################
 	
 	input(pygame.event.get()) # press escape to exit pygame. Then press ctrl-c to exit python.
 	
 	show_image(real_path + "/processing.png")
-			
+	
+	sleep(prep_delay)
+	
+	show_image(filename)
+	
 	time.sleep(restart_delay)
     
 	########################### Begin Step 4 #################################
@@ -228,6 +230,7 @@ def start_photobooth():
 	show_image(real_path + "/finished.png")
 	
 	time.sleep(restart_delay)
+	
 	show_image(real_path + "/intro.png");
 
 ####################
@@ -235,6 +238,13 @@ def start_photobooth():
 ####################
 
 print "Photo booth app running..." 
+
+api = twitter.Api(consumer_key=consumer_key,
+                      consumer_secret=consumer_secret,
+                      access_token_key=access_token,
+                      access_token_secret=access_token_secret)
+                      
+print(api.VerifyCredentials())
 
 show_image(real_path + "/intro.png");
 
