@@ -223,7 +223,9 @@ def start_photobooth():
 	
 	show_image(real_path + "/uploading.png")
 	
-	status = api.PostUpdate(filename)
+	file = open(filename, 'rb')
+	data = file.read()
+	status = api.PostUpdate(filename,media=data)
 	
 	time.sleep(restart_delay)
     
