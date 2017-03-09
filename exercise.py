@@ -14,6 +14,7 @@ import sys
 import socket
 import pygame
 import subprocess
+import logging
 from pygame.locals import QUIT, KEYDOWN, K_ESCAPE
 #import pytumblr # https://github.com/tumblr/pytumblr
 import config # this is the config python file config.py
@@ -205,7 +206,10 @@ def start_photobooth():
 
 	print now
   
-	actuate_camera_shutter();
+	filename = actuate_camera_shutter();
+	
+	show_image(filename)
+	sleep(prep_delay)
   
 	########################### Begin Step 3 #################################
 	
