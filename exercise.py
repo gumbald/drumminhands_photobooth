@@ -236,9 +236,12 @@ show_image(real_path + "/intro.png");
 
 while True:
 	#GPIO.output(led_pin,True); #turn on the light showing users they can push the button
-	button = input(pygame.event.get()) # press escape to exit pygame. Then press ctrl-c to exit python.
-	print button
-	if button != 'None':
+	input(pygame.event.get()) # press escape to exit pygame. Then press ctrl-c to exit python.
+	events = pygame.event.get()
+	for event in events:
+		if event.type == pygame.KEYDOWN:
+				if event.key == pygame.K_j:
+					start_photobooth()
 	#GPIO.wait_for_edge(btn_pin, GPIO.FALLING)
 	#time.sleep(config.debounce) #debounce
-		start_photobooth()
+	#start_photobooth()
