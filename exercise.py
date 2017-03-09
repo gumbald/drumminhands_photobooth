@@ -204,12 +204,12 @@ def start_photobooth():
 	now = time.strftime("%Y-%m-%d-%H-%M-%S") #get the current date and time for the start of the filename
 
 	print now
-    
+  
+	actuate_camera_shutter();
+  
 	########################### Begin Step 3 #################################
 	
 	input(pygame.event.get()) # press escape to exit pygame. Then press ctrl-c to exit python.
-	
-	print "Creating an animated gif" 
 	
 	show_image(real_path + "/processing.png")
 			
@@ -221,7 +221,7 @@ def start_photobooth():
 		
 	print "Done"
 	
-    show_image(real_path + "/finished.png")
+	show_image(real_path + "/finished.png")
 	
 	time.sleep(restart_delay)
 	show_image(real_path + "/intro.png");
@@ -234,12 +234,11 @@ print "Photo booth app running..."
 
 show_image(real_path + "/intro.png");
 
-actuate_camera_shutter();
-
 while True:
 	#GPIO.output(led_pin,True); #turn on the light showing users they can push the button
 	button = input(pygame.event.get()) # press escape to exit pygame. Then press ctrl-c to exit python.
 	print button
+	if button != 'None':
 	#GPIO.wait_for_edge(btn_pin, GPIO.FALLING)
 	#time.sleep(config.debounce) #debounce
-	start_photobooth()
+    start_photobooth()
