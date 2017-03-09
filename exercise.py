@@ -221,7 +221,7 @@ def start_photobooth():
 		
 	print "Done"
 	
-  	show_image(real_path + "/finished.png")
+  show_image(real_path + "/finished.png")
 	
 	time.sleep(restart_delay)
 	show_image(real_path + "/intro.png");
@@ -238,7 +238,8 @@ actuate_camera_shutter();
 
 while True:
 	#GPIO.output(led_pin,True); #turn on the light showing users they can push the button
-	input(pygame.event.get()) # press escape to exit pygame. Then press ctrl-c to exit python.
+	button = input(pygame.event.get()) # press escape to exit pygame. Then press ctrl-c to exit python.
+	print button
 	#GPIO.wait_for_edge(btn_pin, GPIO.FALLING)
 	#time.sleep(config.debounce) #debounce
 	start_photobooth()
