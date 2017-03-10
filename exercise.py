@@ -23,8 +23,7 @@ from time import gmtime, strftime, sleep
 from random import randint
 import definitions as r
 import twitter
-from images2gif import writeGif
-from PIL import Image
+from os import system
 
 ########################
 ### Variables Config ###
