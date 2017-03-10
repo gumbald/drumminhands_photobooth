@@ -72,7 +72,7 @@ pygame.display.toggle_fullscreen()
 ### Functions ###
 #################
 
-def actuate_camera_shutter():
+def actuate_camera_shutter(img_size):
     '''
     Actuates the camera and downloads the image onto the Raspberry Pi
     :return: the filepath of the photo taken
@@ -83,6 +83,7 @@ def actuate_camera_shutter():
     gpout = ""
 
     try:
+	gpout = subprocess.check_output("gphoto2 --set-config /main/imgsettings/imagesize=" + img_size, stderr=subprocess.STDOUT, shell=True)
         gpout = subprocess.check_output("gphoto2 --capture-image-and-download --keep --filename " + image_filepath, stderr=subprocess.STDOUT, shell=True)
 
         # CalledProcessError is raised when the camera is turned off (or battery dies?)
@@ -198,30 +199,30 @@ def start_photobooth():
 	
 	if random_decider == 0:
 		take_extra_photos = True
-		pose_gap=0.5
+		pose_gap=0.1
 	
 	show_image(real_path + "/pose3.png")
 	sleep(pose_gap)
 	
 	if take_extra_photos:
-		filename3 = actuate_camera_shutter()
+		filename3 = actuate_camera_shutter(2)
 	
 	show_image(real_path + "/pose2.png")
 	sleep(pose_gap)
 	
 	if take_extra_photos:
-		filename2 = actuate_camera_shutter()
+		filename2 = actuate_camera_shutter(2)
 		
 	show_image(real_path + "/pose1.png")
 	sleep(pose_gap)
 	
 	if take_extra_photos:
-		filename1 = actuate_camera_shutter()
+		filename1 = actuate_camera_shutter(2)
 	
 	now = time.strftime("%Y-%m-%d-%H-%M-%S") #get the current date and time for the start of the filename
 	print now
 	
-	extra_files = []
+	extra_files = [ filename1, filename2, filename3 ]
 	images = []
 
 	if take_extra_photos:
@@ -236,7 +237,7 @@ def start_photobooth():
 	
 	print "Taking pics"
   
-	filename = actuate_camera_shutter();
+	filename = actuate_camera_shutter(0);
   
 	########################### Begin Step 3 #################################
 	
