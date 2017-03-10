@@ -23,7 +23,7 @@ from time import gmtime, strftime, sleep
 from random import randint
 import definitions as r
 import twitter
-from images2gif import writeGif
+import imageio
 
 ########################
 ### Variables Config ###
@@ -193,25 +193,26 @@ def start_photobooth():
 	sleep(prep_delay)
 	
 	take_extra_photos = False
-	random_decider = randint(0,2)
+	random_decider = randint(0,1)
+	pose_gap = randint(0,2)
 	
 	if random_decider == 0:
 		take_extra_photos = True
 	
 	show_image(real_path + "/pose3.png")
-	sleep(randint(1,3))
+	sleep(pose_gap)
 	
 	if take_extra_photos:
 		filename3 = actuate_camera_shutter()
 	
 	show_image(real_path + "/pose2.png")
-	sleep(randint(1,3))
+	sleep(pose_gap)
 	
 	if take_extra_photos:
 		filename2 = actuate_camera_shutter()
 		
 	show_image(real_path + "/pose1.png")
-	sleep(randint(1,3))
+	sleep(pose_gap)
 	
 	if take_extra_photos:
 		filename1 = actuate_camera_shutter()
@@ -220,12 +221,12 @@ def start_photobooth():
 	print now
 	
 	extra_files = []
-	images = [Image.open(fn) for fn in extra_files]
+	images = []
+
 	if take_extra_photos:
-		extra_files.append(filename1)
-		extra_files.append(filename2)
-		extra_files.append(filename3)
-		writeGif(r.FOLDER_PHOTOS_GIF + now + ".gif",images,duration=0.5,dither=0)
+		for filename in extra_files:
+    			images.append(imageio.imread(filename))
+		imageio.mimwrite(r.FOLDER_PHOTOS_GIF + now + ".gif",images, duration=0.5)
 	
 	# clear the screen
 	clear_screen()
