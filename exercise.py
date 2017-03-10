@@ -35,7 +35,7 @@ total_pics = 4 # number of pics to be taken
 capture_delay = 1 # delay between pics
 prep_delay = 2 # number of seconds at step 1 as users prep to have photo taken
 gif_delay = 100 # How much time between frames in the animated gif
-restart_delay = 10 # how long to display finished message before beginning a new session
+restart_delay = 4 # how long to display finished message before beginning a new session
 test_server = 'www.google.com'
 
 #############################
@@ -195,7 +195,10 @@ def start_photobooth():
 	
 	take_extra_photos = False
 	random_decider = randint(0,1)
-	pose_gap = randint(0,2)
+	pose_gap = randint(1,2)
+	
+	extra_files = []
+	gif_images = []
 	
 	if random_decider == 0:
 		take_extra_photos = True
@@ -206,30 +209,30 @@ def start_photobooth():
 	
 	if take_extra_photos:
 		filename3 = actuate_camera_shutter(2)
+		extra_files.append(filename3)
 	
 	show_image(real_path + "/pose2.png")
 	sleep(pose_gap)
 	
 	if take_extra_photos:
 		filename2 = actuate_camera_shutter(2)
+		extra_files.append(filename2)
 		
 	show_image(real_path + "/pose1.png")
 	sleep(pose_gap)
 	
 	if take_extra_photos:
 		filename1 = actuate_camera_shutter(2)
+		extra_files.append(filename1)
 	
 	now = time.strftime("%Y-%m-%d-%H-%M-%S") #get the current date and time for the start of the filename
 	print now
-	
-	extra_files = [ filename1, filename2, filename3 ]
-	images = []
 
 	if take_extra_photos:
 		for gif_filename in extra_files:
 			print gif_filename
-    			images.append(imageio.imread(gif_filename))
-		imageio.mimwrite(r.FOLDER_PHOTOS_GIF + now + ".gif",images)
+    			gif_images.append(imageio.imread(gif_filename))
+		imageio.mimwrite(r.FOLDER_PHOTOS_GIF + now + ".gif",gif_images)
 	
 	# clear the screen
 	clear_screen()
