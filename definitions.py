@@ -18,6 +18,7 @@ PIN_SWITCH_IN = int(18)
 FOLDER_PHOTOS_ORIGINAL = "/home/pi/Wedding/"
 FOLDER_PHOTOS_CONVERTED = "/home/pi/Wedding/Converted/"
 FOLDER_PHOTOS_MONTAGE = "/home/pi/Wedding/Montages/"
+FOLDER_PHOTOS_GIF = "/home/pi/Wedding/GIF/"
 
 # Configuration of each image
 # UK passport is 35mm width x 45mm height
