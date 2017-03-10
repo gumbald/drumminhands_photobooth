@@ -197,8 +197,8 @@ def start_photobooth():
 	random_decider = randint(0,5)
 	pose_gap = randint(1,2)
 	
-	extra_files = []
-	gif_images = []
+	if random_decider == 0:
+		take_extra_photos = True
 	
 	show_image(real_path + "/pose3.png")
 	sleep(pose_gap)
