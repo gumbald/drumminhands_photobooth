@@ -230,9 +230,7 @@ def start_photobooth():
 	print now
 
 	if take_extra_photos:
-    		gif_images = [Image.open(fn) for fn in extra_files] 
-		print gif_images
-		writeGif(r.FOLDER_PHOTOS_GIF + now + ".gif",gif_images,duration=0.5)
+    		system('convert -delay 50 -loop 0 ' + filename3 + ' ... ' + filename2 + ' ... ' + filename1 + ' ' + r.FOLDER_PHOTOS_GIF + now + '.gif')
 	
 	# clear the screen
 	clear_screen()
