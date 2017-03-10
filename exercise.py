@@ -23,7 +23,8 @@ from time import gmtime, strftime, sleep
 from random import randint
 import definitions as r
 import twitter
-import imageio
+from images2gif import writeGif
+from PIL import Image
 
 ########################
 ### Variables Config ###
@@ -229,11 +230,9 @@ def start_photobooth():
 	print now
 
 	if take_extra_photos:
-		for gif_filename in extra_files:
-			print gif_filename
-    			gif_images.append(imageio.imread(gif_filename))
+    		gif_images = [Image.open(fn) for fn in extra_files] 
 		print gif_images
-		imageio.mimsave(r.FOLDER_PHOTOS_GIF + now + ".gif",gif_images)
+		writeGif(r.FOLDER_PHOTOS_GIF + now + ".gif",gif_images,duration=0.5)
 	
 	# clear the screen
 	clear_screen()
