@@ -232,6 +232,7 @@ def start_photobooth():
 		for gif_filename in extra_files:
 			print gif_filename
     			gif_images.append(imageio.imread(gif_filename))
+		print gif_images
 		imageio.mimwrite(r.FOLDER_PHOTOS_GIF + now + ".gif",gif_images)
 	
 	# clear the screen
