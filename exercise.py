@@ -221,7 +221,7 @@ def start_photobooth():
 		for x in range(0, 5):
 			filename_gif = actuate_camera_shutter(2)
 			os.rename(filename_gif, now + "_" + str(x) + ".jpg")
-		system('convert -delay 50 -loop 0 ' + now + '_*.jpg ' + r.FOLDER_PHOTOS_GIF + now + '.gif')
+		filename = r.FOLDER_PHOTOS_GIF + now + '.gif'
 	else:
 		filename = actuate_camera_shutter(0);
   
@@ -230,19 +230,18 @@ def start_photobooth():
 	input(pygame.event.get()) # press escape to exit pygame. Then press ctrl-c to exit python.
 	
 	show_image(real_path + "/processing.png")
-	
 	sleep(prep_delay)
 	
 	if take_extra_photos:
-		# Not sure what to do here
-		print "Show a GIF?"
+		show_image(real_path + "/processing.png")
+		system('convert -delay 50 -loop 0 ' + now + '_*.jpg ' + r.FOLDER_PHOTOS_GIF + now + '.gif')
 	else:
 		show_image(filename)
 		sleep(prep_delay)
 
 	show_image(real_path + "/uploading.png")
 	
-	#status = api.PostUpdate('#nottheonlyjbinthevillage',media=filename)
+	status = api.PostUpdate('#nottheonlyjbinthevillage',media=filename)
 	
 	time.sleep(restart_delay)
     
