@@ -23,6 +23,7 @@ from time import gmtime, strftime, sleep
 from random import randint
 import definitions as r
 import twitter
+from images2gif import writeGif
 
 ########################
 ### Variables Config ###
@@ -192,9 +193,9 @@ def start_photobooth():
 	sleep(prep_delay)
 	
 	take_extra_photos = false
-	random_decider = randint(0,9)
+	random_decider = randint(0,2)
 	
-	if random_decider = 0:
+	if random_decider == 0:
 		take_extra_photos = true
 	
 	show_image(real_path + "/pose3.png")
@@ -215,16 +216,22 @@ def start_photobooth():
 	if take_extra_photos:
 		filename1 = actuate_camera_shutter()
 	
+	now = time.strftime("%Y-%m-%d-%H-%M-%S") #get the current date and time for the start of the filename
+	print now
+	
+	extra_files = []
+	if take_extra_photos:
+		extra_files.append(filename1)
+		extra_files.append(filename2)
+		extra_files.append(filename3)
+		writeGif(r.FOLDER_PHOTOS_GIF + now + ".gif",images,duration=0.5,dither=0)
+	
 	# clear the screen
 	clear_screen()
 		
 	################################# Begin Step 2 #################################
 	
 	print "Taking pics"
-	
-	now = time.strftime("%Y-%m-%d-%H-%M-%S") #get the current date and time for the start of the filename
-
-	print now
   
 	filename = actuate_camera_shutter();
   
