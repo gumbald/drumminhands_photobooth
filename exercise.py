@@ -192,11 +192,11 @@ def start_photobooth():
 	show_image(real_path + "/instructions.png")
 	sleep(prep_delay)
 	
-	take_extra_photos = false
+	take_extra_photos = False
 	random_decider = randint(0,2)
 	
 	if random_decider == 0:
-		take_extra_photos = true
+		take_extra_photos = True
 	
 	show_image(real_path + "/pose3.png")
 	sleep(randint(1,3))
