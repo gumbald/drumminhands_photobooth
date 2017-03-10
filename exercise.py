@@ -224,7 +224,7 @@ def start_photobooth():
 		extra_files.append(filename1)
 		extra_files.append(filename2)
 		extra_files.append(filename3)
-		writeGif(r.FOLDER_PHOTOS_GIF + now + ".gif",images,duration=0.5,dither=0)
+		writeGif(r.FOLDER_PHOTOS_GIF + now + ".gif",extra_files,duration=0.5,dither=0)
 	
 	# clear the screen
 	clear_screen()
