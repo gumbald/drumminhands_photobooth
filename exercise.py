@@ -218,7 +218,7 @@ def start_photobooth():
 	clear_screen()
 	
 	if take_extra_photos:
-		for x in range(0, 5):
+		for x in range(0, 3):
 			filename_gif = actuate_camera_shutter(2)
 			os.rename(filename_gif, now + "_" + str(x) + ".jpg")
 		filename = r.FOLDER_PHOTOS_GIF + now + '.gif'
@@ -234,7 +234,7 @@ def start_photobooth():
 	
 	if take_extra_photos:
 		show_image(real_path + "/processing.png")
-		system('convert -delay 50 -loop 0 ' + now + '_*.jpg ' + r.FOLDER_PHOTOS_GIF + now + '.gif')
+		system('convert -delay 40 -loop 0 ' + now + '_*.jpg ' + r.FOLDER_PHOTOS_GIF + now + '.gif')
 	else:
 		show_image(filename)
 		sleep(prep_delay)
