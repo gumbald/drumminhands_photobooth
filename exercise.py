@@ -191,12 +191,29 @@ def start_photobooth():
 	show_image(real_path + "/instructions.png")
 	sleep(prep_delay)
 	
+	take_extra_photos = false
+	random_decider = randint(0,9)
+	
+	if random_decider = 0:
+		take_extra_photos = true
+	
 	show_image(real_path + "/pose3.png")
 	sleep(randint(1,3))
+	
+	if take_extra_photos:
+		filename3 = actuate_camera_shutter()
+	
 	show_image(real_path + "/pose2.png")
 	sleep(randint(1,3))
+	
+	if take_extra_photos:
+		filename2 = actuate_camera_shutter()
+		
 	show_image(real_path + "/pose1.png")
 	sleep(randint(1,3))
+	
+	if take_extra_photos:
+		filename1 = actuate_camera_shutter()
 	
 	# clear the screen
 	clear_screen()
@@ -225,7 +242,7 @@ def start_photobooth():
 	
 	show_image(real_path + "/uploading.png")
 	
-	status = api.PostUpdate('#nottheonlyjbinthevillage',media=filename)
+	#status = api.PostUpdate('#nottheonlyjbinthevillage',media=filename)
 	
 	time.sleep(restart_delay)
     
