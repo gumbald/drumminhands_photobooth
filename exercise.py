@@ -198,6 +198,7 @@ def start_photobooth():
 	
 	if random_decider == 0:
 		take_extra_photos = True
+		pose_gap=0.5
 	
 	show_image(real_path + "/pose3.png")
 	sleep(pose_gap)
@@ -226,7 +227,7 @@ def start_photobooth():
 	if take_extra_photos:
 		for filename in extra_files:
     			images.append(imageio.imread(filename))
-		imageio.mimwrite(r.FOLDER_PHOTOS_GIF + now + ".gif",images, duration=0.5)
+		imageio.mimwrite(r.FOLDER_PHOTOS_GIF + now + ".gif",images)
 	
 	# clear the screen
 	clear_screen()
