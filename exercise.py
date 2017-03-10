@@ -194,51 +194,36 @@ def start_photobooth():
 	sleep(prep_delay)
 	
 	take_extra_photos = False
-	random_decider = randint(0,1)
+	random_decider = randint(0,5)
 	pose_gap = randint(1,2)
 	
 	extra_files = []
 	gif_images = []
 	
-	if random_decider == 0:
-		take_extra_photos = True
-		pose_gap=0.1
-	
 	show_image(real_path + "/pose3.png")
 	sleep(pose_gap)
 	
-	if take_extra_photos:
-		filename3 = actuate_camera_shutter(2)
-		extra_files.append(filename3)
-	
 	show_image(real_path + "/pose2.png")
 	sleep(pose_gap)
-	
-	if take_extra_photos:
-		filename2 = actuate_camera_shutter(2)
-		extra_files.append(filename2)
 		
 	show_image(real_path + "/pose1.png")
 	sleep(pose_gap)
 	
-	if take_extra_photos:
-		filename1 = actuate_camera_shutter(2)
-		extra_files.append(filename1)
+	filename = ""
 	
 	now = time.strftime("%Y-%m-%d-%H-%M-%S") #get the current date and time for the start of the filename
 	print now
-
-	if take_extra_photos:
-    		system('convert -delay 50 -loop 0 ' + filename3 + ' ... ' + filename2 + ' ... ' + filename1 + ' ' + r.FOLDER_PHOTOS_GIF + now + '.gif')
 	
 	# clear the screen
 	clear_screen()
-		
-	################################# Begin Step 2 #################################
 	
-	print "Taking pics"
-  
-	filename = actuate_camera_shutter(0);
+	if take_extra_photos:
+		for x in range(0, 5)
+			filename_gif = actuate_camera_shutter(2)
+			os.rename(filename_gif, now + "_" + x + ".jpg")
+		system('convert -delay 50 -loop 0 ' + now + '_*.jpg ' + r.FOLDER_PHOTOS_GIF + now + '.gif')
+	else:
+		filename = actuate_camera_shutter(0);
   
 	########################### Begin Step 3 #################################
 	
@@ -248,10 +233,12 @@ def start_photobooth():
 	
 	sleep(prep_delay)
 	
-	show_image(filename)
-	
-	sleep(prep_delay)
-	
+	if take_extra_photos:
+		# Not sure what to do here
+	else:
+		show_image(filename)
+		sleep(prep_delay)
+
 	show_image(real_path + "/uploading.png")
 	
 	#status = api.PostUpdate('#nottheonlyjbinthevillage',media=filename)
