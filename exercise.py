@@ -235,6 +235,7 @@ def start_photobooth():
 	
 	if take_extra_photos:
 		# Not sure what to do here
+		print "Show a GIF?"
 	else:
 		show_image(filename)
 		sleep(prep_delay)
