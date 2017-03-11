@@ -222,11 +222,11 @@ def start_photobooth():
 			filename_gif = actuate_camera_shutter(1)
 			if x == 0:
 				show_image(real_path + "/instructions.png")
-			elif x = 1:
+			elif x == 1:
 				show_image(real_path + "/gif1.png")
-			elif x = 2:
+			elif x == 2:
 				show_image(real_path + "/gif2.png")
-			elif x = 3:
+			elif x == 3:
 				show_image(real_path + "/gif3.png")
 			print filename_gif
 			system('convert ' + filename_gif + ' -resize 50% ' + r.FOLDER_PHOTOS_SHRUNK + now + "_" + str(x) + ".jpg")
