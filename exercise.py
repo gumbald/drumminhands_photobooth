@@ -220,12 +220,10 @@ def start_photobooth():
 	if take_extra_photos:
 		for x in range(0, 4):
 			filename_gif = actuate_camera_shutter(1)
-			if x == 0:
+			if x == 1:
 				show_image(real_path + "/instructions.png")
-			elif x == 1:
-				show_image(real_path + "/gif1.png")
 			elif x == 2:
-				show_image(real_path + "/gif2.png")
+				show_image(real_path + "/gif1.png")
 			elif x == 3:
 				show_image(real_path + "/gif3.png")
 			print filename_gif
