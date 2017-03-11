@@ -219,11 +219,18 @@ def start_photobooth():
 	
 	if take_extra_photos:
 		for x in range(0, 4):
-			filename_gif = actuate_camera_shutter(2)
-			show_image(real_path + "/instructions.png")
+			filename_gif = actuate_camera_shutter(1)
+			if x == 0:
+				show_image(real_path + "/instructions.png")
+			elif x = 1:
+				show_image(real_path + "/gif1.png")
+			elif x = 2:
+				show_image(real_path + "/gif2.png")
+			elif x = 3:
+				show_image(real_path + "/gif3.png")
 			print filename_gif
-			system('convert ' + filename_gif + ' -resize 50% ' + filename_gif)
-			os.rename(filename_gif, r.FOLDER_PHOTOS_ORIGINAL + now + "_" + str(x) + ".jpg")
+			system('convert ' + filename_gif + ' -resize 50% ' + r.FOLDER_PHOTOS_SHRUNK + now + "_" + str(x) + ".jpg")
+			#os.rename(r.FOLDER_PHOTOS_SHRUNK + filename_gif, r.FOLDER_PHOTOS_SHRUNK)
 		filename = r.FOLDER_PHOTOS_GIF + now + '.gif'
 	else:
 		filename = actuate_camera_shutter(0);
@@ -237,7 +244,7 @@ def start_photobooth():
 	
 	if take_extra_photos:
 		show_image(real_path + "/processing.png")
-		system('convert -delay 25 -loop 0 ' + r.FOLDER_PHOTOS_ORIGINAL + now + '_*.jpg ' + r.FOLDER_PHOTOS_GIF + now + '.gif')
+		system('convert -delay 25 -loop 0 ' + r.FOLDER_PHOTOS_SHRUNK + now + '_*.jpg ' + r.FOLDER_PHOTOS_GIF + now + '.gif')
 	else:
 		show_image(filename)
 		sleep(prep_delay)
