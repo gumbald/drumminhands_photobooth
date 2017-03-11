@@ -211,15 +211,16 @@ def start_photobooth():
 	
 	filename = ""
 	
-	now = time.strftime("%Y-%m-%d-%H-%M-%S") #get the current date and time for the start of the filename
+	now = time.strftime("%Y-%m-%d_%H%M%S") #get the current date and time for the start of the filename
 	print now
 	
 	# clear the screen
 	clear_screen()
 	
 	if take_extra_photos:
-		for x in range(0, 3):
+		for x in range(0, 4):
 			filename_gif = actuate_camera_shutter(2)
+			system('convert ' + filename_gif + ' -resize 50% ' + filename_gif)
 			os.rename(filename_gif, r.FOLDER_PHOTOS_ORIGINAL + now + "_" + str(x) + ".jpg")
 		filename = r.FOLDER_PHOTOS_GIF + now + '.gif'
 	else:
@@ -234,7 +235,7 @@ def start_photobooth():
 	
 	if take_extra_photos:
 		show_image(real_path + "/processing.png")
-		system('convert -delay 40 -loop 0 ' + now + '_*.jpg ' + r.FOLDER_PHOTOS_GIF + now + '.gif')
+		system('convert -delay 25 -loop 0 ' + now + '_*.jpg ' + r.FOLDER_PHOTOS_GIF + now + '.gif')
 	else:
 		show_image(filename)
 		sleep(prep_delay)
