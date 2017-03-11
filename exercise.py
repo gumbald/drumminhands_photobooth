@@ -194,7 +194,7 @@ def start_photobooth():
 	sleep(prep_delay)
 	
 	take_extra_photos = False
-	random_decider = randint(0,2)
+	random_decider = randint(0,1)
 	pose_gap = randint(1,2)
 	
 	if random_decider == 0:
@@ -220,6 +220,7 @@ def start_photobooth():
 	if take_extra_photos:
 		for x in range(0, 4):
 			filename_gif = actuate_camera_shutter(2)
+			show_image(real_path + "/instructions.png")
 			print filename_gif
 			system('convert ' + filename_gif + ' -resize 50% ' + filename_gif)
 			os.rename(filename_gif, r.FOLDER_PHOTOS_ORIGINAL + now + "_" + str(x) + ".jpg")
