@@ -236,7 +236,7 @@ def start_photobooth():
 	
 	if take_extra_photos:
 		show_image(real_path + "/processing.png")
-		system('convert -delay 25 -loop 0 ' + now + '_*.jpg ' + r.FOLDER_PHOTOS_GIF + now + '.gif')
+		system('convert -delay 25 -loop 0 ' + r.FOLDER_PHOTOS_ORIGINAL + now + '_*.jpg ' + r.FOLDER_PHOTOS_GIF + now + '.gif')
 	else:
 		show_image(filename)
 		sleep(prep_delay)
