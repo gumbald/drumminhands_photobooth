@@ -220,6 +220,7 @@ def start_photobooth():
 	if take_extra_photos:
 		for x in range(0, 4):
 			filename_gif = actuate_camera_shutter(2)
+			print filename_gif
 			system('convert ' + filename_gif + ' -resize 50% ' + filename_gif)
 			os.rename(filename_gif, r.FOLDER_PHOTOS_ORIGINAL + now + "_" + str(x) + ".jpg")
 		filename = r.FOLDER_PHOTOS_GIF + now + '.gif'
