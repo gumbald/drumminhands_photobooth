@@ -194,8 +194,8 @@ def start_photobooth():
 	sleep(prep_delay)
 	
 	take_extra_photos = False
-	random_decider = randint(0,1)
-	pose_gap = randint(1,2)
+	random_decider = randint(0,10)
+	pose_gap = randint(1,3)
 	
 	if random_decider == 0:
 		take_extra_photos = True
