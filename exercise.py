@@ -28,8 +28,8 @@ from os import system
 ########################
 ### Variables Config ###
 ########################
-led_pin = 7 # LED 
-btn_pin = 18 # pin for the start button
+led_pin = 19 # LED 
+btn_pin = 5 # pin for the start button
 
 total_pics = 4 # number of pics to be taken
 capture_delay = 1 # delay between pics
@@ -55,7 +55,7 @@ replay_cycles = 2 # how many times to show each photo on-screen after taking
 real_path = os.path.dirname(os.path.realpath(__file__))
 
 # GPIO setup
-GPIO.setmode(GPIO.BOARD)
+GPIO.setmode(GPIO.BCM)
 GPIO.setup(led_pin,GPIO.OUT) # LED
 GPIO.setup(btn_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.output(led_pin,False) #for some reason the pin turns on at the beginning of the program. Why?
@@ -189,7 +189,7 @@ def start_photobooth():
 	################################# Begin Step 1 #################################
 	
 	print "Get Ready"
-	#GPIO.output(led_pin,False);
+	GPIO.output(led_pin,False);
 	show_image(real_path + "/instructions.png")
 	sleep(prep_delay)
 	
@@ -281,13 +281,15 @@ print(api.VerifyCredentials())
 show_image(real_path + "/intro.png");
 
 while True:
-	#GPIO.output(led_pin,True); #turn on the light showing users they can push the button
-	input(pygame.event.get()) # press escape to exit pygame. Then press ctrl-c to exit python.
-	events = pygame.event.get()
-	for event in events:
-		if event.type == pygame.KEYDOWN:
-				if event.key == pygame.K_j:
-					start_photobooth()
+	GPIO.output(led_pin,True); #turn on the light showing users they can push the button
+	#input(pygame.event.get()) # press escape to exit pygame. Then press ctrl-c to exit python.
+	#events = pygame.event.get()
+	#for event in events:
+	#	if event.type == pygame.KEYDOWN:
+	#			if event.key == pygame.K_j:
+	#				start_photobooth()
 	#GPIO.wait_for_edge(btn_pin, GPIO.FALLING)
 	#time.sleep(config.debounce) #debounce
-	#start_photobooth()
+	input_state = GPIO.input(btn_pin)
+        if input_state == False:
+            start_photobooth()
