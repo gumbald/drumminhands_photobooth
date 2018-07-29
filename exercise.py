@@ -251,6 +251,14 @@ def start_photobooth():
             show_image(real_path + "/uploading.png")
             
             #status = api.PostUpdate('#nottheonlyjbinthevillage',media=filename)
+			
+			import ftplib
+			session = ftplib.FTP('server.address.com','USERNAME','PASSWORD')
+			file = open(filename,'rb')                  # file to send
+			session.cwd('images')
+			session.storbinary('STOR ' + now + '.jpg', file)     # send the file
+			file.close()                                    # close file and FTP
+			session.quit()
             
             time.sleep(restart_delay)
         
