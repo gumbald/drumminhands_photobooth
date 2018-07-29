@@ -83,7 +83,7 @@ def actuate_camera_shutter(img_size):
     gpout = ""
 
     try:
-	gpout = subprocess.check_output("gphoto2 --set-config /main/imgsettings/imagesize=" + str(img_size), stderr=subprocess.STDOUT, shell=True)
+		gpout = subprocess.check_output("gphoto2 --set-config /main/imgsettings/imagesize=" + str(img_size), stderr=subprocess.STDOUT, shell=True)
         gpout = subprocess.check_output("gphoto2 --capture-image-and-download --keep --filename " + image_filepath, stderr=subprocess.STDOUT, shell=True)
 
         # CalledProcessError is raised when the camera is turned off (or battery dies?)
@@ -250,7 +250,7 @@ def start_photobooth():
 
             show_image(real_path + "/uploading.png")
             
-            status = api.PostUpdate('#nottheonlyjbinthevillage',media=filename)
+            #status = api.PostUpdate('#nottheonlyjbinthevillage',media=filename)
             
             time.sleep(restart_delay)
         
@@ -281,7 +281,7 @@ api = twitter.Api(consumer_key=config.consumer_key,
                       access_token_key=config.access_token_key,
                       access_token_secret=config.access_token_secret)
                       
-print(api.VerifyCredentials())
+#print(api.VerifyCredentials())
 
 show_image(real_path + "/intro.png");
 
