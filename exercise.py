@@ -22,7 +22,8 @@ from signal import alarm, signal, SIGALRM, SIGKILL
 from time import gmtime, strftime, sleep
 from random import randint
 import definitions as r
-import twitter
+#import twitter
+import ftplib
 from os import system
 
 ########################
@@ -252,10 +253,9 @@ def start_photobooth():
             
             #status = api.PostUpdate('#nottheonlyjbinthevillage',media=filename)
 			
-			import ftplib
 			session = ftplib.FTP('server.address.com','USERNAME','PASSWORD')
 			file = open(filename,'rb')                  # file to send
-			session.cwd('images')
+			#session.cwd('images')
 			session.storbinary('STOR ' + now + '.jpg', file)     # send the file
 			file.close()                                    # close file and FTP
 			session.quit()
