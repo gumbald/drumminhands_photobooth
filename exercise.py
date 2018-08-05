@@ -197,10 +197,11 @@ def start_photobooth():
             
             take_extra_photos = False
             random_decider = randint(0,10)
-            pose_gap = randint(1,3)
-            
-            if random_decider == 0:
-                    take_extra_photos = True
+            #pose_gap = randint(1,3)
+            pose_gap = 1    
+	
+            #if random_decider == 0:
+            #        take_extra_photos = True
             
             show_image(real_path + "/pose3.png")
             sleep(pose_gap)
@@ -219,7 +220,7 @@ def start_photobooth():
             # clear the screen
             clear_screen()
             
-            if take_extra_photos:
+            #if take_extra_photos:
                     for x in range(0, 4):
                             filename_gif = actuate_camera_shutter(1)
                             if x == 0:
@@ -228,12 +229,12 @@ def start_photobooth():
                                     show_image(real_path + "/gif1.png")
                             elif x == 2:
                                     show_image(real_path + "/gif3.png")
-                            print filename_gif
+                            #print filename_gif
                             system('convert ' + filename_gif + ' -resize 50% ' + r.FOLDER_PHOTOS_SHRUNK + now + "_" + str(x) + ".jpg")
                             #os.rename(r.FOLDER_PHOTOS_SHRUNK + filename_gif, r.FOLDER_PHOTOS_SHRUNK)
-                    filename = r.FOLDER_PHOTOS_GIF + now + '.gif'
-            else:
-                    filename = actuate_camera_shutter(0);
+                    filename = r.FOLDER_PHOTOS_GIF + now + '.jpg'
+            #else:
+            #        filename = actuate_camera_shutter(0);
       
             ########################### Begin Step 3 #################################
             
@@ -242,12 +243,13 @@ def start_photobooth():
             show_image(real_path + "/processing.png")
             sleep(prep_delay)
             
-            if take_extra_photos:
+            #if take_extra_photos:
                     show_image(real_path + "/animating.png")
+		    # MAKE COLLAGE HERE
                     system('convert -delay 25 -loop 0 ' + r.FOLDER_PHOTOS_SHRUNK + now + '_*.jpg ' + r.FOLDER_PHOTOS_GIF + now + '.gif')
-            else:
-                    show_image(filename)
-                    sleep(prep_delay)
+            #else:
+            #        show_image(filename)
+            #        sleep(prep_delay)
 
             show_image(real_path + "/uploading.png")
             
