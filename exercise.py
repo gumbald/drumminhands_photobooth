@@ -222,7 +222,7 @@ def start_photobooth():
             print now
             
             # clear the screen
-            clear_screen()
+            #clear_screen()
             
             if take_extra_photos:
 		    print "Entering photo loop"
@@ -232,8 +232,8 @@ def start_photobooth():
                                     show_image(real_path + "/gif2.png")
                             elif x == 1:
                                     show_image(real_path + "/gif1.png")
-                            elif x == 2:
-                                    show_image(real_path + "/gif3.png")
+                            #elif x == 2:
+                            #        show_image(real_path + "/gif3.png")
                             #print filename_gif
                             system('convert ' + filename_gif + ' -resize 50% ' + r.FOLDER_PHOTOS_SHRUNK + now + "_" + str(x) + ".jpg")
                             #os.rename(r.FOLDER_PHOTOS_SHRUNK + filename_gif, r.FOLDER_PHOTOS_SHRUNK)
@@ -251,8 +251,8 @@ def start_photobooth():
             if take_extra_photos:
                     show_image(real_path + "/animating.png")
 		    # MAKE COLLAGE HERE
-		    strip = Image.new('RGB', (1200, 2400), (255,255,255))
-		    y = 30
+		    strip = Image.new('RGB', (1300, 2400), (255,255,255))
+		    y = 80
 		    filename = "FILMSTRIP_" + now + ".jpg"
 		    for filename_add in glob.glob(r.FOLDER_PHOTOS_SHRUNK + now + '_*.jpg'):
 		    	jpgfile = Image.open(filename_add)
