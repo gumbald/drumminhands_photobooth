@@ -15,6 +15,9 @@ import socket
 import pygame
 import subprocess
 import logging
+import PIL
+from PIL import Image
+from PIL import ImageOps
 from pygame.locals import QUIT, KEYDOWN, K_ESCAPE
 #import pytumblr # https://github.com/tumblr/pytumblr
 import config # this is the config python file config.py
@@ -223,7 +226,7 @@ def start_photobooth():
             
             if take_extra_photos:
 		    print "Entering photo loop"
-                    for x in range(0, 4):
+                    for x in range(0, 3):
                             filename_gif = actuate_camera_shutter(1)
                             if x == 0:
                                     show_image(real_path + "/gif2.png")
@@ -248,7 +251,15 @@ def start_photobooth():
             if take_extra_photos:
                     show_image(real_path + "/animating.png")
 		    # MAKE COLLAGE HERE
-                    system('convert -delay 25 -loop 0 ' + r.FOLDER_PHOTOS_SHRUNK + now + '_*.jpg ' + r.FOLDER_PHOTOS_GIF + now + '.gif')
+		    strip = Image.new('RGB', (1150, 2280), (255,255,255))
+		    y = 7
+		    filename = "FILMSTRIP_" + now + ".jpg"
+		    for filename_add in glob.glob(r.FOLDER_PHOTOS_SHRUNK + now + '_*.jpg):
+			y = y + 755
+		    	jpgfile = Image.open(filename_add)
+			strip.paste(jpgfile, (7, y))
+			strip.save(filename)
+                    #system('convert -delay 25 -loop 0 ' + r.FOLDER_PHOTOS_SHRUNK + now + '_*.jpg ' + r.FOLDER_PHOTOS_GIF + now + '.gif')
             #else:
             #        show_image(filename)
             #        sleep(prep_delay)
