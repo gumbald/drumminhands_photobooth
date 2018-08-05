@@ -234,7 +234,7 @@ def start_photobooth():
                             #print filename_gif
                             system('convert ' + filename_gif + ' -resize 50% ' + r.FOLDER_PHOTOS_SHRUNK + now + "_" + str(x) + ".jpg")
                             #os.rename(r.FOLDER_PHOTOS_SHRUNK + filename_gif, r.FOLDER_PHOTOS_SHRUNK)
-                    filename = r.FOLDER_PHOTOS_GIF + now + '.jpg'
+                    filename = r.FOLDER_PHOTOS_GIF + now + '.gif'
             #else:
             #        filename = actuate_camera_shutter(0);
       
