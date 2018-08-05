@@ -14,6 +14,11 @@ consumer_secret='IprGRWkahwKTmw4fBCLgvUTtw4OqoP6zDRNhP4XVi5hcCEntEt'
 access_token_key='774651132530585600-X3sCiGrGz0gsXhxHycbYq66tVpcmVM1'
 access_token_secret='mpyloaFdRFVgYY3z9qGUHNSSLRw6fu1IQZUZLv6XpG7VB'
 
+# FTP setup
+ftp_username=''
+ftp_server=''
+ftp_password=''
+
 #Config settings to change behavior of photo booth
 monitor_w = 800    # width of the display monitor
 monitor_h = 480    # height of the display monitor
