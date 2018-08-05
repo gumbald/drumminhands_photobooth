@@ -253,12 +253,12 @@ def start_photobooth():
             
             #status = api.PostUpdate('#nottheonlyjbinthevillage',media=filename)
 			
-			session = ftplib.FTP(config.ftp_server,config.ftp_username,config.ftp_password)
-			file = open(filename,'rb')                  # file to send
-			#session.cwd('images')
-			session.storbinary('STOR ' + now + '.jpg', file)     # send the file
-			file.close()                                    # close file and FTP
-			session.quit()
+	    session = ftplib.FTP(config.ftp_server,config.ftp_username,config.ftp_password)
+	    file = open(filename,'rb')                  # file to send
+	    #session.cwd('images')
+	    session.storbinary('STOR ' + now + '.jpg', file)     # send the file
+	    file.close()                                    # close file and FTP
+	    session.quit()
             
             time.sleep(restart_delay)
         
