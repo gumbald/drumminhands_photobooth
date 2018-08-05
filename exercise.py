@@ -251,14 +251,14 @@ def start_photobooth():
             if take_extra_photos:
                     show_image(real_path + "/animating.png")
 		    # MAKE COLLAGE HERE
-		    strip = Image.new('RGB', (1150, 2280), (255,255,255))
-		    y = 7
+		    strip = Image.new('RGB', (1200, 2400), (255,255,255))
+		    y = 30
 		    filename = "FILMSTRIP_" + now + ".jpg"
 		    for filename_add in glob.glob(r.FOLDER_PHOTOS_SHRUNK + now + '_*.jpg'):
-			y = y + 755
 		    	jpgfile = Image.open(filename_add)
-			strip.paste(jpgfile, (7, y))
+			strip.paste(jpgfile, (36, y))
 			strip.save(filename)
+			y = y + 778
                     #system('convert -delay 25 -loop 0 ' + r.FOLDER_PHOTOS_SHRUNK + now + '_*.jpg ' + r.FOLDER_PHOTOS_GIF + now + '.gif')
             #else:
             #        show_image(filename)
