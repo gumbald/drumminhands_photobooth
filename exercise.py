@@ -196,12 +196,13 @@ def start_photobooth():
             sleep(prep_delay)
             
             take_extra_photos = False
-            random_decider = randint(0,10)
+            #random_decider = randint(0,10)
             #pose_gap = randint(1,3)
-            pose_gap = 1    
+            random_decider = 0
+	    pose_gap = 1    
 	
-            #if random_decider == 0:
-            #        take_extra_photos = True
+            if random_decider == 0:
+                    take_extra_photos = True
             
             show_image(real_path + "/pose3.png")
             sleep(pose_gap)
@@ -220,8 +221,7 @@ def start_photobooth():
             # clear the screen
             clear_screen()
             
-            #if take_extra_photos:
-	    if true:
+            if take_extra_photos:
 		    print "Entering photo loop"
                     for x in range(0, 4):
                             filename_gif = actuate_camera_shutter(1)
@@ -245,8 +245,7 @@ def start_photobooth():
             show_image(real_path + "/processing.png")
             sleep(prep_delay)
             
-            #if take_extra_photos:
-	    if true:
+            if take_extra_photos:
                     show_image(real_path + "/animating.png")
 		    # MAKE COLLAGE HERE
                     system('convert -delay 25 -loop 0 ' + r.FOLDER_PHOTOS_SHRUNK + now + '_*.jpg ' + r.FOLDER_PHOTOS_GIF + now + '.gif')
