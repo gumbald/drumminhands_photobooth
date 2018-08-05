@@ -245,6 +245,7 @@ def start_photobooth():
             sleep(prep_delay)
             
             #if take_extra_photos:
+	    if true:
                     show_image(real_path + "/animating.png")
 		    # MAKE COLLAGE HERE
                     system('convert -delay 25 -loop 0 ' + r.FOLDER_PHOTOS_SHRUNK + now + '_*.jpg ' + r.FOLDER_PHOTOS_GIF + now + '.gif')
