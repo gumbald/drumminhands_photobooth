@@ -222,6 +222,7 @@ def start_photobooth():
             
             #if take_extra_photos:
 	    if true:
+		    print "Entering photo loop"
                     for x in range(0, 4):
                             filename_gif = actuate_camera_shutter(1)
                             if x == 0:
