@@ -254,7 +254,7 @@ def start_photobooth():
 		    strip = Image.new('RGB', (1150, 2280), (255,255,255))
 		    y = 7
 		    filename = "FILMSTRIP_" + now + ".jpg"
-		    for filename_add in glob.glob(r.FOLDER_PHOTOS_SHRUNK + now + '_*.jpg):
+		    for filename_add in glob.glob(r.FOLDER_PHOTOS_SHRUNK + now + '_*.jpg'):
 			y = y + 755
 		    	jpgfile = Image.open(filename_add)
 			strip.paste(jpgfile, (7, y))
