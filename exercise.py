@@ -202,7 +202,7 @@ def start_photobooth():
             #random_decider = randint(0,10)
             #pose_gap = randint(1,3)
             random_decider = 0
-	    pose_gap = 1    
+	        pose_gap = 1    
 	
             if random_decider == 0:
                     take_extra_photos = True
@@ -223,16 +223,16 @@ def start_photobooth():
             
             # clear the screen
             #clear_screen()
-	    show_image(real_path + "/gif3.png")
+	        show_image(real_path + "/snap1.png")
             
             if take_extra_photos:
 		    print "Entering photo loop"
                     for x in range(0, 3):
                             filename_gif = actuate_camera_shutter(1)
                             if x == 0:
-                                    show_image(real_path + "/gif2.png")
+                                    show_image(real_path + "/snap2.png")
                             elif x == 1:
-                                    show_image(real_path + "/gif1.png")
+                                    show_image(real_path + "/snap3.png")
                             #elif x == 2:
                             #        show_image(real_path + "/gif3.png")
                             #print filename_gif
@@ -249,8 +249,8 @@ def start_photobooth():
             show_image(real_path + "/processing.png")
             sleep(prep_delay)
             
-            if take_extra_photos:
-                    show_image(real_path + "/animating.png")
+            #if take_extra_photos:
+            #        show_image(real_path + "/animating.png")
 		    # MAKE COLLAGE HERE
 		    strip = Image.new('RGB', (1300, 2460), (255,255,255))
 		    y = 126
