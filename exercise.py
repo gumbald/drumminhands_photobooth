@@ -151,6 +151,11 @@ def checkAlbum(service, albumName):
     }
     
     rCheck = requests.get(checkUrl, headers=headers)
+    print(rCheck.status_code)
+    if rCheck.status_code == 401:
+        print('Need to refresh...')
+        request = google.auth.transport.requests.Request()
+        credentials.refresh(request)
     albums = json.loads(rCheck.content)
 #	print(rCheck)
 #	return '';
@@ -437,9 +442,9 @@ def start_photobooth():
                     
             print "Done"
             
-            show_image(real_path + "/finished.png")
+            #show_image(real_path + "/finished.png")
             
-            time.sleep(restart_delay)
+            #time.sleep(restart_delay)
             
             show_image(real_path + "/intro.png");
 
@@ -471,6 +476,8 @@ if upload_gphotos:
         flow = client.flow_from_clientsecrets('../client_secret.json', SCOPES)
         creds = tools.run_flow(flow, store)
     service = build('photoslibrary', 'v1', http=creds.authorize(Http()))
+    if upload_gphotos:
+        newAlbumId = checkAlbum(service, "Photobooth")
     print service
     
 while True:
