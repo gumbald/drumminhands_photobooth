@@ -2,9 +2,10 @@
 # created by chris@drumminhands.com
 # see instructions at http://www.drumminhands.com/2014/06/15/raspberry-pi-photo-booth/
 
-running_on_pi = False
+running_on_pi = True
 upload_ftp = False
 upload_gphotos = True
+run_fullscreen = True
 
 photos_filmstrip = False
 photos_single = True
@@ -21,6 +22,7 @@ import os
 import glob
 import time
 from time import sleep
+import argparse
 
 if running_on_pi:
     import RPi.GPIO as GPIO
@@ -47,6 +49,7 @@ from apiclient.discovery import build
 from httplib2 import Http
 from oauth2client import file, client, tools
 import numpy
+from google.auth.transport import requests as g
 import requests
 import datetime
 
@@ -92,7 +95,7 @@ pygame.display.set_mode((config.monitor_w, config.monitor_h))
 screen = pygame.display.get_surface()
 pygame.display.set_caption('Photo Booth Pics')
 pygame.mouse.set_visible(False) #hide the mouse cursor
-if running_on_pi:
+if run_fullscreen:
     pygame.display.toggle_fullscreen()
 
 #################
@@ -154,8 +157,11 @@ def checkAlbum(service, albumName):
     print(rCheck.status_code)
     if rCheck.status_code == 401:
         print('Need to refresh...')
-        request = google.auth.transport.requests.Request()
-        credentials.refresh(request)
+        request = g.Request()
+        print(request)
+        print(creds)
+        creds.refresh(Http())
+        print creds['access_token']
     albums = json.loads(rCheck.content)
 #	print(rCheck)
 #	return '';
@@ -471,10 +477,15 @@ if upload_gphotos:
     SCOPES = 'https://www.googleapis.com/auth/photoslibrary'
     store = file.Storage('../credentials.json')
     creds = store.get()
+    parser = argparse.ArgumentParser(add_help=False)
+    parser.add_argument('--logging_level', default='ERROR')
+    parser.add_argument('--noauth_local_webserver', action='store_true',
+                default=True, help='Do not run a local web server.')
+    args = parser.parse_args([])
     print creds
     if not creds or creds.invalid:
         flow = client.flow_from_clientsecrets('../client_secret.json', SCOPES)
-        creds = tools.run_flow(flow, store)
+        creds = tools.run_flow(flow, store, args)
     service = build('photoslibrary', 'v1', http=creds.authorize(Http()))
     if upload_gphotos:
         newAlbumId = checkAlbum(service, "Photobooth")
