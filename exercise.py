@@ -327,9 +327,6 @@ def start_photobooth():
             if running_on_pi:
                 GPIO.output(led_pin,False);
             
-            show_image(real_path + "/instructions.png")
-            sleep(prep_delay)
-            
             take_extra_photos = False
             #random_decider = randint(0,10)
             #pose_gap = randint(1,3)
@@ -346,6 +343,9 @@ def start_photobooth():
             sleep(pose_gap)
                     
             show_image(real_path + "/pose1.png")
+            sleep(pose_gap)
+
+            show_image(real_path + "/instructions.png")
             sleep(pose_gap)
             
             filename = ""
@@ -412,8 +412,8 @@ def start_photobooth():
                     y = y + 778
                     #system('convert -delay 25 -loop 0 ' + r.FOLDER_PHOTOS_SHRUNK + now + '_*.jpg ' + r.FOLDER_PHOTOS_GIF + now + '.gif')
             #else:
-            #        show_image(filename)
-            #        sleep(prep_delay)
+            show_image(filename_gif)
+            sleep(prep_delay)
 
             print("Uploading")
             show_image(real_path + "/uploading.png")
@@ -431,9 +431,9 @@ def start_photobooth():
                 print("Upload to Google Photos!")
                 photoName = filename_gif
                 print photoName
-                newAlbumId = checkAlbum(service, "Photobooth")
+                newAlbumId = checkAlbum(service, "Watson Woodland Wedding")
                 if newAlbumId == '':
-                	newAlbumId = createAlbum(service, "Photobooth")
+                	newAlbumId = createAlbum(service, "Watson Woodland Wedding")
                 print('Album: ' + newAlbumId)
                 
                 #authenticate user and build service
