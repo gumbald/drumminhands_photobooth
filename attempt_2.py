@@ -4,7 +4,7 @@ Creates a Photos v1 API service and prints the names and ids of the last 10 albu
 the user has access to.
 """
 from __future__ import print_function
-from apiclient.discovery import build
+from googleapiclient.discovery import build
 from httplib2 import Http
 from oauth2client import file, client, tools
 import numpy
@@ -28,10 +28,10 @@ def takePhoto():
 	return_value, image = camera.read()
 	cv2.imwrite(photoTitle, image)
 	del(camera)
-	return photoTitle;
+	return photoTitle
 
 def upload(service, file):
-	f = open(file, 'rb').read();
+	f = open(file, 'rb').read()
 
 	url = 'https://photoslibrary.googleapis.com/v1/uploads'
 	headers = {
@@ -60,9 +60,9 @@ def createItem(service, upload_token, albumId):
 	}
 
 	if albumId is not None:
-	    body['albumId'] = albumId;
+	    body['albumId'] = albumId
 
-	bodySerialized = json.dumps(body);
+	bodySerialized = json.dumps(body)
 	headers = {
 	    'Authorization': "Bearer " + service._http.request.credentials.access_token,
 	    'Content-Type': 'application/json',
@@ -72,7 +72,7 @@ def createItem(service, upload_token, albumId):
 
 	r = requests.post(url, data=bodySerialized, headers=headers)
 	print('\nContent: ' + r.content)
-	return r.content;
+	return r.content
 
 def checkAlbum(service, albumName):
 	checkUrl = 'https://photoslibrary.googleapis.com/v1/albums?excludeNonAppCreatedData=true'
@@ -86,9 +86,9 @@ def checkAlbum(service, albumName):
 #	print(rCheck)
 #	return '';
 	if len(albums['albums']) == 1:
-		return albums['albums'][0]['id'];
+		return albums['albums'][0]['id']
 	else:
-		return '';
+		return ''
 
 def createAlbum(service, albumName):
 	url = 'https://photoslibrary.googleapis.com/v1/albums'
@@ -99,7 +99,7 @@ def createAlbum(service, albumName):
 	    }
 	}
 
-	bodySerialized = json.dumps(body);
+	bodySerialized = json.dumps(body)
 	headers = {
 	    'Authorization': "Bearer " + service._http.request.credentials.access_token,
 	    'Content-Type': 'application/json',
@@ -109,7 +109,7 @@ def createAlbum(service, albumName):
 
 	r = requests.post(url, data=bodySerialized, headers=headers)
 	print('\nContent: ' + r.content)
-	return r.content['id'];
+	return r.content['id']
 
 # Setup the Photo v1 API
 SCOPES = 'https://www.googleapis.com/auth/photoslibrary'

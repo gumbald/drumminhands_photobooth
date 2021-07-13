@@ -14,11 +14,11 @@ gif_delay = 100 # How much time between frames in the animated gif
 # gm convert -size 500x500 2016-07-31-10-26-26-01.jpg -thumbnail 500x500 sm.jpg"
 
 for x in range(1, total_pics+1): #batch process all the images
-	print x
+	print(x)
 	graphicsmagick = "gm convert -size 500x500 " + config.file_path + now + "-0" + str(x) + ".jpg -thumbnail 500x500 " + config.file_path + now + "-0" + str(x) + "-sm.jpg"
 	os.system(graphicsmagick) #do the graphicsmagick action
 
 graphicsmagick = "gm convert -delay " + str(gif_delay) + " " + config.file_path + now + "*-sm.jpg " + config.file_path + now + ".gif" 
 os.system(graphicsmagick) #make the .gif
 
-print "done"
+print("done")
