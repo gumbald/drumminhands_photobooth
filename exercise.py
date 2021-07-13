@@ -1,11 +1,9 @@
 #!/usr/bin/env python
-# created by chris@drumminhands.com
-# see instructions at http://www.drumminhands.com/2014/06/15/raspberry-pi-photo-booth/
 
-running_on_pi = True
+running_on_pi = False
 upload_ftp = False
-upload_gphotos = True
-run_fullscreen = True
+upload_gphotos = False
+run_fullscreen = False
 
 photos_filmstrip = False
 photos_single = True
@@ -26,6 +24,7 @@ import argparse
 
 if running_on_pi:
     import RPi.GPIO as GPIO
+    from signal import alarm, signal, SIGALRM, SIGKILL
 
 import atexit
 import pygame
@@ -33,7 +32,6 @@ import subprocess
 import logging
 from PIL import Image
 from pygame.locals import QUIT, KEYDOWN, K_ESCAPE
-#import pytumblr # https://github.com/tumblr/pytumblr
 import config # this is the config python file config.py
 import definitions as r
 #import twitter
@@ -41,11 +39,10 @@ import ftplib
 from os import system
 import cv2
 import time
-from signal import alarm, signal, SIGALRM, SIGKILL
 from time import gmtime, strftime, sleep
 from random import randint
 import json
-from apiclient.discovery import build
+from googleapiclient.discovery import build
 from httplib2 import Http
 from oauth2client import file, client, tools
 import numpy
@@ -102,7 +99,7 @@ if run_fullscreen:
 ### Functions ###
 #################
 def upload(service, file):
-	f = open(file, 'rb').read();
+	f = open(file, 'rb').read()
 
 	url = 'https://photoslibrary.googleapis.com/v1/uploads'
 	headers = {
@@ -131,9 +128,9 @@ def createItem(service, upload_token, albumId):
 	}
 
 	if albumId is not None:
-	    body['albumId'] = albumId;
+	    body['albumId'] = albumId
 
-	bodySerialized = json.dumps(body);
+	bodySerialized = json.dumps(body)
 	headers = {
 	    'Authorization': "Bearer " + service._http.request.credentials.access_token,
 	    'Content-Type': 'application/json',
@@ -143,10 +140,10 @@ def createItem(service, upload_token, albumId):
 
 	res = requests.post(url, data=bodySerialized, headers=headers)
 	print('\nContent: ' + res.content)
-	return res.content;
+	return res.content
 
 def checkAlbum(service, albumName):
-    print service._http.request.credentials.access_token
+    print(service._http.request.credentials.access_token)
     checkUrl = 'https://photoslibrary.googleapis.com/v1/albums?excludeNonAppCreatedData=true'
     headers = {
         'Authorization': "Bearer " + service._http.request.credentials.access_token,
@@ -161,17 +158,17 @@ def checkAlbum(service, albumName):
         print(request)
         print(creds)
         creds.refresh(Http())
-        print creds['access_token']
+        print(creds['access_token'])
     albums = json.loads(rCheck.content)
 #	print(rCheck)
-#	return '';
+#	return ''
     
-    print albums
+    print(albums)
     
     if len(albums['albums']) == 1:
-        return albums['albums'][0]['id'];
+        return albums['albums'][0]['id']
     else:
-        return '';
+        return ''
 
 def createAlbum(service, albumName):
 	url = 'https://photoslibrary.googleapis.com/v1/albums'
@@ -182,7 +179,7 @@ def createAlbum(service, albumName):
 	    }
 	}
 
-	bodySerialized = json.dumps(body);
+	bodySerialized = json.dumps(body)
 	headers = {
 	    'Authorization': "Bearer " + service._http.request.credentials.access_token,
 	    'Content-Type': 'application/json',
@@ -192,7 +189,7 @@ def createAlbum(service, albumName):
 
 	res = requests.post(url, data=bodySerialized, headers=headers)
 	print('\nContent: ' + res.content)
-	return res.content['id'];
+	return res.content['id']
 
 def actuate_camera_shutter(img_size):
     '''
@@ -211,7 +208,7 @@ def actuate_camera_shutter(img_size):
         # CalledProcessError is raised when the camera is turned off (or battery dies?)
 
         if "ERROR" in gpout:
-            print gpout
+            print(gpout)
             logging.error(gpout)
             raise IOError("Not able to take photo as the command failed for photo " + image_filepath)
 
@@ -275,6 +272,7 @@ def set_dimensions(img_w, img_h):
         transform_x = config.monitor_w
         transform_y = config.monitor_h
         offset_y = offset_x = 0
+
 # display one image on screen
 def show_image(image_path):
 
@@ -301,9 +299,9 @@ def clear_screen():
 # display a group of images
 def display_pics(jpg_group):
     for i in range(0, replay_cycles): #show pics a few times
-		for i in range(1, total_pics+1): #show each pic
-			show_image(config.file_path + jpg_group + "-0" + str(i) + ".jpg")
-			time.sleep(replay_delay) # pause 
+        for i in range(1, total_pics+1): #show each pic
+            show_image(config.file_path + jpg_group + "-0" + str(i) + ".jpg")
+            time.sleep(replay_delay) # pause 
 
 def takePhoto():
     photoTitle = FOLDER_PHOTOS_ORIGINAL + "photobooth_" + strftime("%Y-%m-%d_%H%M%S", gmtime()) + ".jpg"
@@ -313,156 +311,155 @@ def takePhoto():
     return_value, image = camera.read()
     cv2.imwrite(photoTitle, image)
     del(camera)
-    return photoTitle;
+    return photoTitle
 
 # define the photo taking function for when the big button is pressed 
 def start_photobooth(): 
 
-	input(pygame.event.get()) # press escape to exit pygame. Then press ctrl-c to exit python.
+    input(pygame.event.get()) # press escape to exit pygame. Then press ctrl-c to exit python.
 
-	################################# Begin Step 1 #################################
-
-        try:
-            print "Get Ready"
-            if running_on_pi:
-                GPIO.output(led_pin,False);
-            
-            take_extra_photos = False
-            #random_decider = randint(0,10)
-            #pose_gap = randint(1,3)
-            random_decider = 1
-            pose_gap = 1
-            
-            if random_decider == 0:
-                    take_extra_photos = True
-            
-            show_image(real_path + "/pose3.png")
-            sleep(pose_gap)
-            
-            show_image(real_path + "/pose2.png")
-            sleep(pose_gap)
-                    
-            show_image(real_path + "/pose1.png")
-            sleep(pose_gap)
-
-            show_image(real_path + "/instructions.png")
-            sleep(pose_gap)
-            
-            filename = ""
-            
-            now = time.strftime("%Y-%m-%d_%H%M%S") #get the current date and time for the start of the filename
-            print now
-            
-            if running_on_pi:
-                filename_gif = actuate_camera_shutter(1)
-            else:
-                filename_gif = takePhoto()
-
-            print filename_gif
-            
-            if running_on_pi:
-                system('convert ' + filename_gif + ' -resize 50% ' + FOLDER_PHOTOS_SHRUNK + now + ".jpg")
-            else:
-                system('convert ' + filename_gif + ' ' + FOLDER_PHOTOS_SHRUNK + now  + ".jpg")
-            
-            filename = FOLDER_PHOTOS_GIF + now + '.gif'
-
-            # clear the screen
-            #clear_screen()
-            #show_image(real_path + "/snap1.png")
-            
-            if take_extra_photos:
-                print "Entering photo loop"
-                for x in range(0, 3):
-                        if running_on_pi:
-                            filename_gif = actuate_camera_shutter(1)
-                        else:
-                            filename_gif = takePhoto()
-                        if x == 0:
-                                show_image(real_path + "/snap2.png")
-                        elif x == 1:
-                                show_image(real_path + "/snap3.png")
-                        #elif x == 2:
-                        #        show_image(real_path + "/gif3.png")
-                        #print filename_gif
-                        system('convert ' + filename_gif + ' -resize 50% ' + FOLDER_PHOTOS_SHRUNK + now + "_" + str(x) + ".jpg")
-                        #os.rename(r.FOLDER_PHOTOS_SHRUNK + filename_gif, r.FOLDER_PHOTOS_SHRUNK)
-                filename = FOLDER_PHOTOS_GIF + now + '.gif'
-            #else:
-            #        filename = actuate_camera_shutter(0);
-      
-            ########################### Begin Step 3 #################################
-            
-            input(pygame.event.get()) # press escape to exit pygame. Then press ctrl-c to exit python.
-            
-            show_image(real_path + "/processing.png")
-            sleep(prep_delay)
-            
-            #if take_extra_photos:
-            #        show_image(real_path + "/animating.png")
-    		    # MAKE COLLAGE HERE
-            if photos_filmstrip:
-                strip = Image.new('RGB', (1300, 2460), (255,255,255))
-                y = 126
-                filename = "FILMSTRIP_" + now + ".jpg"
-                for filename_add in glob.glob(FOLDER_PHOTOS_SHRUNK + now + '_*.jpg'):
-                    jpgfile = Image.open(filename_add)
-                    strip.paste(jpgfile, (86, y))
-                    strip.save(filename)
-                    y = y + 778
-                    #system('convert -delay 25 -loop 0 ' + r.FOLDER_PHOTOS_SHRUNK + now + '_*.jpg ' + r.FOLDER_PHOTOS_GIF + now + '.gif')
-            #else:
-            show_image(filename_gif)
-            sleep(prep_delay)
-
-            print("Uploading")
-            show_image(real_path + "/uploading.png")
-            
-            #status = api.PostUpdate('#nottheonlyjbinthevillage',media=filename)
-            if upload_ftp:
-                session = ftplib.FTP(config.ftp_server,config.ftp_username,config.ftp_password)
-                file = open(filename,'rb')                  # file to send
-                #session.cwd('images')
-                session.storbinary('STOR ' + now + '.jpg', file)     # send the file
-                file.close()                                    # close file and FTP
-                session.quit()
-                
-            if upload_gphotos:
-                print("Upload to Google Photos!")
-                photoName = filename_gif
-                print photoName
-                newAlbumId = checkAlbum(service, "Watson Woodland Wedding")
-                if newAlbumId == '':
-                	newAlbumId = createAlbum(service, "Watson Woodland Wedding")
-                print('Album: ' + newAlbumId)
-                
-                #authenticate user and build service
-                upload_token = upload(service, photoName)
-                response = createItem(service, upload_token, newAlbumId)
-            
-            time.sleep(restart_delay)
+    try:
+        print("Get Ready")
+        if running_on_pi:
+            GPIO.output(led_pin,False)
         
-            ########################### Begin Step 4 #################################
-            
-            input(pygame.event.get()) # press escape to exit pygame. Then press ctrl-c to exit python.
-                    
-            print "Done"
-            
-            #show_image(real_path + "/finished.png")
-            
-            #time.sleep(restart_delay)
-            
-            show_image(real_path + "/intro.png");
+        take_extra_photos = False
+        #random_decider = randint(0,10)
+        #pose_gap = randint(1,3)
+        random_decider = 1
+        pose_gap = 1
+        
+        if random_decider == 0:
+                take_extra_photos = True
+        
+        show_image(real_path + "/images/pose3.png")
+        sleep(pose_gap)
+        
+        show_image(real_path + "/images/pose2.png")
+        sleep(pose_gap)
+                
+        show_image(real_path + "/images/pose1.png")
+        sleep(pose_gap)
 
-        except Exception as e: 
-            print(e)
-            show_image(real_path + "/again.png");
+        show_image(real_path + "/images/instructions.png")
+        sleep(pose_gap)
+        
+        filename = ""
+        
+        now = time.strftime("%Y-%m-%d_%H%M%S") #get the current date and time for the start of the filename
+        print(now)
+        
+        if running_on_pi:
+            filename_gif = actuate_camera_shutter(1)
+        else:
+            filename_gif = takePhoto()
+
+        print(filename_gif)
+        
+        if running_on_pi:
+            system('convert ' + filename_gif + ' -resize 50% ' + FOLDER_PHOTOS_SHRUNK + now + ".jpg")
+        else:
+            system('convert ' + filename_gif + ' ' + FOLDER_PHOTOS_SHRUNK + now  + ".jpg")
+        
+        filename = FOLDER_PHOTOS_GIF + now + '.gif'
+
+        # clear the screen
+        #clear_screen()
+        #show_image(real_path + "/snap1.png")
+        
+        if take_extra_photos:
+            print("Entering photo loop")
+            for x in range(0, 3):
+                    if running_on_pi:
+                        filename_gif = actuate_camera_shutter(1)
+                    else:
+                        filename_gif = takePhoto()
+                    if x == 0:
+                            show_image(real_path + "/images/snap2.png")
+                    elif x == 1:
+                            show_image(real_path + "/images/snap3.png")
+                    #elif x == 2:
+                    #        show_image(real_path + "/gif3.png")
+                    #print filename_gif
+                    system('convert ' + filename_gif + ' -resize 50% ' + FOLDER_PHOTOS_SHRUNK + now + "_" + str(x) + ".jpg")
+                    #os.rename(r.FOLDER_PHOTOS_SHRUNK + filename_gif, r.FOLDER_PHOTOS_SHRUNK)
+            filename = FOLDER_PHOTOS_GIF + now + '.gif'
+        #else:
+        #        filename = actuate_camera_shutter(0)
+    
+        ########################### Begin Step 3 #################################
+        
+        input(pygame.event.get()) # press escape to exit pygame. Then press ctrl-c to exit python.
+        
+        show_image(real_path + "/images/processing.png")
+        sleep(prep_delay)
+        
+        #if take_extra_photos:
+        #        show_image(real_path + "/animating.png")
+            # MAKE COLLAGE HERE
+        if photos_filmstrip:
+            strip = Image.new('RGB', (1300, 2460), (255,255,255))
+            y = 126
+            filename = "FILMSTRIP_" + now + ".jpg"
+            for filename_add in glob.glob(FOLDER_PHOTOS_SHRUNK + now + '_*.jpg'):
+                jpgfile = Image.open(filename_add)
+                strip.paste(jpgfile, (86, y))
+                strip.save(filename)
+                y = y + 778
+                #system('convert -delay 25 -loop 0 ' + r.FOLDER_PHOTOS_SHRUNK + now + '_*.jpg ' + r.FOLDER_PHOTOS_GIF + now + '.gif')
+        #else:
+        show_image(filename_gif)
+        sleep(prep_delay)
+
+        print("Uploading")
+        show_image(real_path + "/images/uploading.png")
+        
+        #status = api.PostUpdate('#nottheonlyjbinthevillage',media=filename)
+        if upload_ftp:
+            session = ftplib.FTP(config.ftp_server,config.ftp_username,config.ftp_password)
+            file = open(filename,'rb')                  # file to send
+            #session.cwd('images')
+            session.storbinary('STOR ' + now + '.jpg', file)     # send the file
+            file.close()                                    # close file and FTP
+            session.quit()
+            
+        if upload_gphotos:
+            print("Upload to Google Photos!")
+            photoName = filename_gif
+            print(photoName)
+            newAlbumId = checkAlbum(service, "Watson Woodland Wedding")
+            if newAlbumId == '':
+                newAlbumId = createAlbum(service, "Watson Woodland Wedding")
+            print('Album: ' + newAlbumId)
+            
+            #authenticate user and build service
+            upload_token = upload(service, photoName)
+            response = createItem(service, upload_token, newAlbumId)
+        
+        time.sleep(restart_delay)
+    
+        ########################### Begin Step 4 #################################
+        
+        input(pygame.event.get()) # press escape to exit pygame. Then press ctrl-c to exit python.
+                
+        print("Done")
+        
+        #show_image(real_path + "/finished.png")
+        
+        #time.sleep(restart_delay)
+        
+        show_image(real_path + "/images/intro.png")
+
+    except Exception as e: 
+        print(e)
+        show_image(real_path + "/images/again.png")
+        time.sleep(5)
 
 ####################
 ### Main Program ###
 ####################
 
-print "Photo booth app running..." 
+print("Photo booth app running..." )
 
 #api = twitter.Api(consumer_key=config.consumer_key,
 #                      consumer_secret=config.consumer_secret,
@@ -471,7 +468,7 @@ print "Photo booth app running..."
                       
 #print(api.VerifyCredentials())
 
-show_image(real_path + "/intro.png");
+show_image(real_path + "/images/intro.png")
 
 if upload_gphotos:
     SCOPES = 'https://www.googleapis.com/auth/photoslibrary'
@@ -482,29 +479,22 @@ if upload_gphotos:
     parser.add_argument('--noauth_local_webserver', action='store_true',
                 default=True, help='Do not run a local web server.')
     args = parser.parse_args([])
-    print creds
+    print(creds)
     if not creds or creds.invalid:
         flow = client.flow_from_clientsecrets('../client_secret.json', SCOPES)
         creds = tools.run_flow(flow, store, args)
     service = build('photoslibrary', 'v1', http=creds.authorize(Http()))
     if upload_gphotos:
         newAlbumId = checkAlbum(service, "Photobooth")
-    print service
+    print(service)
     
 while True:
+    show_image(real_path + "/images/intro.png")
     if running_on_pi:
-        GPIO.output(led_pin,True); #turn on the light showing users they can push the button
+        GPIO.output(led_pin,True) #turn on the light showing users they can push the button
         input_state = GPIO.input(btn_pin)
         if input_state == False:
             start_photobooth()
-	#input(pygame.event.get()) # press escape to exit pygame. Then press ctrl-c to exit python.
-	#events = pygame.event.get()
-	#for event in events
-	#	if event.type == pygame.KEYDOWN:
-	#			if event.key == pygame.K_j:
-	#				start_photobooth()
-	#GPIO.wait_for_edge(btn_pin, GPIO.FALLING)
-	#time.sleep(config.debounce) #debounce
     else:
         events = pygame.event.get()
         for event in events:
